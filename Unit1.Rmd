@@ -1,0 +1,428 @@
+---
+title: "Unit 1. Introduction to Causal Inference"
+author:
+  - name: Pedro Albarrán (Univ. Alicante)
+    email: albarran@ua.es
+date: "UAB, 16-18 June, 2021"
+header-includes:
+   - \usepackage{setspace}
+   - \onehalfspacing
+   - \usepackage{authblk}
+   - \author{Pedro Albarrán \\ albarran@ua.es}
+   - \affil{Univ. Alicante}
+output:
+  ioslides_presentation: 
+    widescreen: yes
+    #incremental: true
+    #prettydoc::html_pretty:
+    #  theme: leonids
+    #  highlight: github
+    #rmdformats::html_pretty:
+    #  theme: readthedown
+        
+    #logo: figs/by-nc-sa2.png
+    #css: css/slidestyle2.css  # https://github.com/mdozmorov/ioslides_template
+    
+#    toc: true
+#    number_sections: true
+#    code_folding: hide
+#    df_print: paged
+#    theme: united
+#  html_document: default
+#  beamer_presentation: 
+#      slide_level: 2
+#  html_document:
+#    toc: true
+#    number_sections: true
+#    code_folding: hide
+#    df_print: paged
+#    theme: united
+---
+
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+# Opciones por defecto para los fragmentos de código
+knitr::opts_chunk$set(eval = TRUE, echo = TRUE, 
+                      warning = FALSE, message = FALSE,
+                      results = "hide", fig.show="hide")
+# se muestra y evalúa el código,
+# no se muestran mensajes, ni avisos (warnings)
+# no se muestran los resultados de código (tampoco gráficos)
+#     en los códigos que considere necesarios los mostraré
+
+# Elimino todo del Entorno (del documento)
+rm(list = ls())       
+
+# Cargo todas las bibliotecas necesarias
+# (se podría hacer cuando cada una sea necesaria)
+library("tidyverse")
+library("tidymodels")
+library("printr")
+library("skimr")
+library("dlookr")
+library("broom")
+library("kableExtra")
+library("rpart.plot")
+library("vip")
+
+#fijo el directorio de trabajo
+#setwd("/home/albarran/Dropbox/MAD/00.TEC")
+
+library(rmarkdown)
+#render("filename.Rmd")     
+#browseURL("filename.html")
+```
+
+
+## What is causal inference?
+
+
+* Inferring the effects of any treatment/policy/intervention/etc. 
+
+    * schooling on earnings
+    * training programs on unemployment
+    * class size on students' performance
+    * subsidies on firms' investment, etc.
+
+<!--
+    * advertising on sales
+
+-->
+
+
+<!--
+* Research in Science is about cause and effect
+
+* **Identify** a causal effect from data lies in the heart of empirical work.
+
+* “Credible” causal inference is essential to scientific discovery, publishing and your career
+-->
+
+* “Credible” causal inference is essential to scientific discovery and your career
+
+<!--
+  - Causation means that X *explains* Y
+-->
+
+* Correlation does NOT imply causality
+
+  - Reverse causality
+  
+  - Confounding association <!-- : third common or indirect factor -->
+  
+  - [Spurious relation](https://www.tylervigen.com/spurious-correlations)
+
+<!--
+:::: {style="display: flex;"}
+
+::: {}
+
+<center>
+![](figs/confounding.png){width=80%}
+</center>
+
+::: 
+
+::: {}
+
+  - Reverse causality
+  
+  - Confounding association: third common or indirect factor 
+  - [Spurious relation](https://www.tylervigen.com/spurious-correlations)
+
+::: 
+
+::::
+-->
+
+##  The Counterfactual Framework
+
+* Health status (from 1 to 5) from National Health Interview Survey (NHIS) 2005.
+
+* What do we measure when comparing health outcomes for the hospitalized and the non-hospitalized?
+
+    |Group       | Sample Size | Mean Health Status |  Std. Error |
+    |:-----------|------------:|:------------------:|:-----------:|
+    | Hospital   |        7,774|         3.21       |        0.014|
+    | No hospital|       90,049|         3.93       |        0.003|
+
+
+* If correlation does not imply causation, what does imply causation?
+
+* We need to think in terms of **counterfactuals** ("the road not taken")
+
+
+## Potential outcomes 
+
+* Treatment
+
+$$
+\small
+D_i=\begin{cases}
+    1, & \text{if unit } i \text{ received the treatment (hospital)} \\
+    0, & \text{otherwise.}
+\end{cases}
+$$
+
+
+* Potential outcomes **if** the individual had received treatment or not (irrespective of actual treatment status) 
+$$
+\small
+\begin{matrix}
+    Y_{i}(0) & \text{is the potential outcome for unit } i \text{ with } D_i = 0\\
+    Y_{i}(1) & \text{is the potential outcome for unit } i \text{ with } D_i = 1
+\end{matrix}
+$$
+
+<!--
+* $Y_{i}(1)$ is the health status of an individual **if** she had gone to hospital
+, irrespective of whether she actually went-->
+
+
+* Observed outcome, under the Stable Unit Treatment Value Assumption (SUTVA)
+
+$$ 
+\small
+\begin{align*}
+Y_i &= Y_{i}(1) D_i + Y_{i}(0) [1-D_i] \\
+    &= Y_{i}(0) +  [ Y_{i}(1) - Y_{i}(0) ] D_i
+\end{align*}
+$$
+
+
+## The Fundamental Problem of Causal Inference
+
+
+* Individual treatment effect: 
+
+$$
+\tau_i = \color{red}{Y_{i}(1) - Y_{i}(0)}
+$$
+
+* It is logically impossible to identify the causal effect for an individual, because we cannot observe _both_ $Y_{i}(1)$ and $Y_{i}(0)$
+
+* In other words, there is no counterfactual evidence of treatment
+
+    * when $i$ goes to the hospital, we don't observe her health status if she had not gone
+    * when $i$ does not go the hospital, what could have happened if she had gone?
+
+## Treatment Effects 
+
+* Implication of the Fundamental Problem:
+
+> _We must always make assumptions to identify at least the average causal effect for the population or for some relevant sub-groups_ 
+
+* Average treatment effect (ATE)
+
+$$
+\small
+\mathbb{E}[\tau_i] = \mathbb{E}[Y_{i}(1)-Y_{i}(0)] = \mathbb{E}[Y_{i}(1)]-\mathbb{E}[Y_{i}(0)]
+$$
+
+
+
+- Average treatment effect for the treatment group (ATT)
+
+$$
+\small
+\mathbb{E}[\tau_i | D_i=1] = \mathbb{E}[Y_{i}(1)-Y_{i}(0)| D_i=1] = \mathbb{E}[Y_{i}(1)| D_i=1]-\mathbb{E}[Y_{i}(0)| D_i=1]
+$$
+
+## Selection Bias
+
+* A naive and misleading estimand for ATE <!-- is the difference between average outcomes based on treatment status-->
+
+$$
+\small
+\begin{aligned} 
+\mathbb{E}\left[Y_{i} | D_{i}=1\right]-\mathbb{E}\left[Y_{i} | D_{i}=0\right] &=\underbrace{\mathbb{E}\left[Y_{i}(1) | D_{i}=1\right]-\mathbb{E}\left[Y_{i}(0) | D_{i}=1\right]}_{\text{ATT}}  \\
+&+
+\underbrace{\mathbb{E}\left[Y_{i}(0) | D_{i}=1\right]-\mathbb{E}\left[Y_{i}(0) | D_{i}=0\right]}_{\text{selection bias}}
+\end{aligned}
+$$
+
+
+> __Causal inference is mostly about eliminating selection-bias__
+
+<!-- __EXAMPLE:__ Individuals who go to private universities probably have different characteristics than those who go to public universities.
+-->
+
+:::: {style="display: flex;"}
+
+::: {}
+
+<center>
+![](figs/confounding.png){width=80%}
+</center>
+
+::: 
+
+::: {}
+
+* Recall: correlation does not imply causation
+
+
+::: 
+
+::::
+
+
+## Random Assignment solves the selection bias
+
+* In a randomized controlled trial (RCT), subjects are *randomly* allocated into the treatment and control groups under study.
+
+* Random assignment (RA) of treatment $D_i$ makes treatment $D_i$
+*independent* of potential outcomes
+$$
+\small
+\color{red}{RA \Rightarrow \{Y_{i}(0),Y_{i}(1)\} \perp D_i}
+$$
+
+<!--
+* Individuals in control group can be regarded as an image of what would had happened to treatment group under the counterfactual of no-treatment (and viceversa).
+-->
+
+
+:::: {style="display: flex;"}
+
+::: {}
+
+<center>
+![](figs/RA.png){width=100%}
+</center>
+
+::: 
+
+::: {}
+
+* Treatment does not have a causal "parent"
+
+* Treatment and control groups are comparable: same observables and unobservables characteristics (on average) $\Longrightarrow$ proper counterfactual
+
+::: 
+
+::::
+
+* The  selection bias term vanishes:
+$$
+\small
+\mathbb{E}\left[Y_{i} | D_{i}=1\right]-\mathbb{E}\left[Y_{i} | D_{i}=0\right] = ATE = ATT
+$$
+
+
+## Estimating Causal Effect with Regression
+
+<!--
+* Under RA, one could simply compare mean outcomes to obtain the causal effect, but it is convenient to use regression.
+-->
+
+* Assume for now that the treatment effect is constant: 
+
+$$
+\small
+\color{red}{\tau = Y_{i}(1)-Y_{i}(0)},\quad \forall i
+$$ 
+
+* Then, the observed outcome $\small Y_i = Y_{i}(0) + D_i[Y_{i}(1) - Y_{i}(0)]$ can be written as
+$$
+\small
+\begin{aligned}
+Y_i &= Y_{i}(0) + \color{red}{\tau} D_i \\
+    &= \color{blue}{\mathbb{E}[Y_{i}(0)]} + \tau D_i + Y_{i}(0)\color{blue}{-\mathbb{E}[Y_{i}(0)]}\\
+Y_i &= \alpha + \tau D_i + u_i
+\end{aligned}
+$$
+  * where $\small \alpha = \mathbb{E}[Y_{i}(0)]$ 
+  * and $\small u_i = Y_{i}(0)-\mathbb{E}[Y_{i}(0)]$ (random component of $\small Y_{i}(0)$).
+
+* NOTE that RA guarantees $D$ is exogenous: $\small \mathbb{E}[u_i|D_i]=\mathbb{C}ov(u_i,D_i)=0$
+
+## Internal and External Validity
+
+* Internal validity considers whether the the causal relationship based on the method (eg. RCT) is warranted or not
+
+  * Are there any systematic error in the analysis? Proper design, measurement of variables, etc.
+  
+  * Are the underlying assumption in our analysis valid?
+
+  * Can we address or eliminate alternative explanation for the result?
+
+
+* External validity checks to what extent the casual relationship observed in the study can be generalized
+
+  * to what settings, groups or times can it be extrapolated?
+
+  * did the research account for real world conditions or interactions?
+  
+
+
+## Internal and External Validity (cont'd)
+
+* In RCT, internal validity relies on proper experimental design, specially randomization
+
+    * A guide by Nobel Prize winners Esther Duflo and Michael Kremer [here](http://economics.mit.edu/files/806)
+    
+
+* Trade-off between internal and external validity, but internal validity is the prior consideration
+
+    
+* For any method, you NEVER "have" internal or external validity, only (indirect) evidence supporting it
+
+  * Assumption underlying your identification strategy CANNOT be "proven": eg., potential outcomes are independent of treatment status
+  
+  * BUT you can show that observable characteristics are balanced between both groups
+
+
+## The Role of Covariates in RCT
+
+1. Additional controls **increase precision** of estimated effect
+
+2. Checking that randomization was successful in **balancing** both groups
+
+    * One should not find any (statistical) difference between the estimates with and without covariates
+
+3. Conditional random assignment: sometimes randomization is done conditional on some observables
+
+
+    * Example: poor / non-poor <!--Tennessee Project STAR (at the school level)
+     poor/non-poor -->
+
+4. Exploring mechanisms and other sources of heterogeneity
+
+$$
+\small
+Y_i = \alpha + \beta D_i +\gamma  X_{i} + \delta D_i X_i +  v_i
+$$
+<!--
+    * The magnitude of the treatment effect can be different for individual with different characteristics $X_i$: if so, $\delta \neq 0$
+
+    * Suppose $X_i=\{0,1\}$. This variable can be a *mediator* or potential channel by which $D_i$ affect $Y_i$: if so, $\gamma=0$ and $\delta \neq 0$
+-->
+
+## Social Experiments
+
+* Experiments are regarded as "the gold standard" for program evaluation.
+
+  1. Has the potential for overcoming selection bias
+
+  2. Transparency, easy to explain
+  
+* The "ideal experiment" is a benchmark for identification of causal effect
+
+* However, BUT it can be costly, unfeasible or ethically questionable
+
+## Problems of Experiments
+
+  1. Attrition Bias
+
+  2. Demand Effect: people behave differently because they are part of an experiment.
+
+  3. Substitution Bias: control group members may seek substitutes for treatment.
+
+  4. Anticipation Effects
+
+  5. Indirect treatment
+  
+  6. "Scaling-up", general equilibrium effects
+  
+  7. In general, external Validity
+
