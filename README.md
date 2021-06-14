@@ -1,4 +1,4 @@
-# CursoBigData
-Curso Big Data - Análisis de Datos (Universidad de Alicante)
+# Topics on Causal Inference
+UAB, 16-18 June, 2021
 
-https://albarran.github.io/CursoBigData/
+https://albarran.github.io/TopicsCausalInference/
