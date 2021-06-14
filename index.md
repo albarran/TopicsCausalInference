@@ -4,23 +4,22 @@ subtitle: "UAB, 16-18 June, 2021"
 output: html_document
 ---
 
+## UAB, 16-18 June, 2021
 
-## Instructor
-
-* [Pedro Albarrán](https://sites.google.com/site/pedroalbarran) (Universidad de Alicante)
+### [Pedro Albarrán](https://sites.google.com/site/pedroalbarran) (Universidad de Alicante)
 
 
-## Syllabus
+# Syllabus
 
 * [pdf](Syllabus_CausalInference_UAB.pdf)
 
 
-## Unit 1
+# Unit 1
 
    * [Slides](Unit1.html)
    
    
-## Unit 2
+# Unit 2
 
 
 
