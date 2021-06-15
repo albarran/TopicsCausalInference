@@ -13,12 +13,12 @@ output: html_document
 
 * [pdf](Syllabus_CausalInference_UAB.pdf)
 
-
+ 
 # Unit 1
 
    * [Slides](Unit1.html)
    
-   * [NSW data](https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta)
+   * [NSW data](https://github.com/albarran/TopicsCausalInference/blob/main/data/nsw.dta)
    
    * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nsw.do)
    
