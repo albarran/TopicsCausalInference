@@ -18,6 +18,13 @@ output: html_document
 
    * [Slides](Unit1.html)
    
+   * [NSW data](https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta)
+   
+   * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nsw.do)
+   
+   * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nswl.R)
+   
+   * [Python Jupyter Notebook]()
    
 # Unit 2
 
