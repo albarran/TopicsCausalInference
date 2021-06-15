@@ -486,6 +486,65 @@ Y_i = \alpha + \beta D_i +\gamma  X_{i} + \delta D_i X_i +  v_i
 <li><p>In general, external Validity</p></li>
 </ol>
 
+</article></slide><slide class=""><hgroup><h2>Causal Inference in the Absence of Randomized Experiments</h2></hgroup><article  id="causal-inference-in-the-absence-of-randomized-experiments">
+
+<ul>
+<li><p>In <strong>observational studies</strong>, treatments cannot be regardes as randomly assigned.</p></li>
+<li><p>Technically, the <strong>Ignorability</strong> or Independence Assumption is NOT satisfied</p></li>
+</ul>
+
+<p>\[
+\small
+\{Y_{i}(0),Y_{i}(1)\} \not\perp D_i
+\]</p>
+
+<ul>
+<li>Alternatives methods with observational data exist, including natural experiments and other econometric techniques</li>
+</ul>
+
+<!--
+    * Natural Experiments or Quasi-Experiments
+    * Other Econometrics Methods for causal inference with observational data
+-->
+
+<ul>
+<li><p>These aim at getting as close as possible to a randomized experiment.</p></li>
+<li><p>Lalonde (1986) gives a provocative description of the mistakes when using observational data instead of experimental randomized data.</p></li>
+</ul>
+
+<!--
+* However, randomized experiments are not always a feasible solution for economists
+-->
+
+</article></slide><slide class=""><hgroup><h2>Unconfoundedness</h2></hgroup><article  id="unconfoundedness">
+
+<ul>
+<li>One alternative to identify causal effects depends on the <strong>Unconfoundedness</strong> assumption</li>
+</ul>
+
+<p>\[
+\small
+\{Y_{1i}, Y_{0i}\}  \perp D_i | {X}_i
+\]</p>
+
+<ul>
+<li><p>Here, treatment assignment is independent of potential outcomes <strong>conditional</strong> on observable \({X}_i\)</p>
+
+<ul>
+<li>This is also known as conditional independence assumption</li>
+</ul></li>
+<li><p>Then, selection bias <em>disappears</em> after controlling for \({X}_i\): i.e., &ldquo;selection-on-observable&rdquo;</p></li>
+<li><p>A possible approach for controlling for \(X_i\) is by adding it to the regression.</p></li>
+</ul>
+
+<!--
+$$Y_i = \alpha + \tau D_i + {X}_i'\boldsymbol{\beta} + u_i,$$
+-->
+
+<ul>
+<li>Differently from the RCT setting, here we must control for observable characteristics to identify the ATE.</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>Standard Errors in practical applications</h2></hgroup><article  id="standard-errors-in-practical-applications">
 
 <ul>
@@ -548,7 +607,7 @@ Var(\widehat{\beta})=(X&#39;X)^{-1}(X&#39;\Omega X) (X&#39;X)^{-1}
 <li><p>Eg. random assignment of student to classes of different sizes</p></li>
 <li><p>Data are unlikely to be independent across observations within classes (same teacher, shocks to learning)</p></li>
 </ul></li>
-<li><p>It is important to decide at which level to cluster observations and how to account for a small number of cluster</p>
+<li><p>It is important to decide at which level to cluster observations and how to account for a small number of clusters</p>
 
 <ul>
 <li><p>Abadie, Athey, Imbens and Wooldridge (2017) <a href='https://www.nber.org/papers/w24003' title=''>When Should You Adjust Standard Errors for Clustering?</a></p></li>
