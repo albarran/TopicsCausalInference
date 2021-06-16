@@ -31,5 +31,11 @@ output: html_document
 # Unit 2
 
    * [Slides](Unit2.html)
+   
+   * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/collider_discrimination.do)
+   
+   * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/collider_discrimination.R)
+   
+   * [Jupyter code](https://github.com/albarran/TopicsCausalInference/blob/main/code/collider_discrimination.py)
 
 
