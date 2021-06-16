@@ -24,7 +24,9 @@ output: html_document
    
    * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nswl.R)
    
-   * [Python Jupyter Notebook](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nsw.ipynb)
+   * Python:
+      * [Jupyter Notebook](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nsw.ipynb)
+      * [Jupyter Notebook in Google Colab](https://colab.research.google.com/drive/1RvsDZt3AoOhjKwNchhzD1WUERL4oGyft?usp=sharing)
    
 # Unit 2
 
