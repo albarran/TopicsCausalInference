@@ -28,8 +28,6 @@ output: html_document
    
 # Unit 2
 
-<!--
-   * [Slides](Unit1.html)
--->
+   * [Slides](Unit2.html)
 
 
