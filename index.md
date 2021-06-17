@@ -41,3 +41,6 @@ output: html_document
 # Unit 3
 
    * [Slides](Unit3.html)
+
+   * [CPS data](https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta)
+   
