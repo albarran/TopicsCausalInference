@@ -38,4 +38,6 @@ output: html_document
    
    * [Jupyter code](https://github.com/albarran/TopicsCausalInference/blob/main/code/collider_discrimination.py)
 
+# Unit 3
 
+   * [Slides](Unit3.html)
