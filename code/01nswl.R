@@ -1,5 +1,7 @@
 library(tidyverse)
 library(haven)
+library(sandwich)
+library(lmtest)
 
 # ------------------------------------------------------------------------------
 setwd("/home/albarran/Dropbox/UABCourse/TopicsCausalInference/")
@@ -23,37 +25,40 @@ for (X in seq_along(XX) ) {
   print(XX[X])
   
   form <- paste0(XX[X],"~treat")
-
-  print(summary(lm(data = data, form)))
+  
+  model <-lm(data = data, form)
+  SErob <- coeftest(model, vcov = vcovHC(model, "HC1"))    # robust; HC1 (Stata default)
+  print(SErob)
 }
 
 
-/* -------------------------------------------------------------------------- */
+# ------------------------------------------------------------------------------
   
-  ****************************************************
-  *** ATE
-****************************************************
+# ****************************************************
+# *** ATE
+# ****************************************************
   
-  ttest re78, by(treat) unequal
+ate <- lm(data = data, re78 ~ treat)
+print(coeftest(ate, vcov = vcovHC(ate, "HC1")))
 
-reg re78 treat, vce(robust)
-
-/* -------------------------------------------------------------------------- */
+# ---------------------------------------------------------------------------- #
   
-  ****************************************************
-  *** Including covariates
-****************************************************
+# ****************************************************
+# *** Including covariates
+# ****************************************************
   
-  gen agesq = age^2
+ate2 <- lm(data = data, re78 ~ treat + poly(age,2) + educ + black + hisp + marr + nodegree)
+print(coeftest(ate2, vcov = vcovHC(ate2, "HC1")))
 
-reg re78 treat ${XX} agesq, vce(robust)
-
-****************************************************
-  *** Treatment heterogeneity
-****************************************************
+# ****************************************************
+# *** Treatment heterogeneity
+# ****************************************************
   
-  ** by education
-gen higheduc = (educ>8)
-reg re78 treat i.treat##i.higheduc ${XX}, vce(robust)
+# ** by education
+
+data <- data %>% mutate(higheduc = (educ>8) )
+
+ateHet <- lm(data = data, re78 ~ treat*higheduc + poly(age,2) + educ + black + hisp + marr + nodegree)
+print(coeftest(ateHet, vcov = vcovHC(ateHet, "HC1")))
 
 sink()

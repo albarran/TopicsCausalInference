@@ -3,11 +3,11 @@
 ************************************************************************************************
 ** Original data from NSW (experimental RCT)
 
-use https://github.com/albarran/TopicsCausalInference/blob/main/data/nsw.dta, clear
+use https://github.com/albarran/TopicsCausalInference/raw/main/data/nsw.dta, clear
 
 
 * Now merge in the CPS controls from footnote 2 of Table 2 (Dehejia and Wahba 2002)
-append using https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta
+append using https://github.com/albarran/TopicsCausalInference/raw/main/data/cps.dta
 
 gen agesq=age^2
 gen agecube=age^3
@@ -26,23 +26,25 @@ gen re75sq=re75^2
 
 gen interaction2 = u74*hisp
 
+compress
+
 ************************************************************************************************
 **** Regression
 ************************************************************************************************
 
-reg re78 train, vce(robust)
+reg re78 treat, vce(robust)
 
-reg re78 train age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, vce(robust)
+reg re78 treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, vce(robust)
 
 ** more general form of regression 
 
-reg re78 i.train##(c.age c.agesq c.agecube c.educ c.edusq i.marr i.nodegree i.black i.hisp c.re74 c.re75 i.u74 i.u75 i.interaction1), vce(robust) 
+reg re78 i.treat##(c.age c.agesq c.agecube c.educ c.edusq i.marr i.nodegree i.black i.hisp c.re74 c.re75 i.u74 i.u75 c.interaction1), vce(robust) 
 
-margins         , dydx(train)
-margins if train, dydx(train)
+margins         , dydx(treat)
+margins if treat, dydx(treat)
 
-teffects ra (re78  ${XX}) (train), vce(robust)
-teffects ra (re78  ${XX}) (train), vce(robust) atet
+teffects ra (re78  ${XX}) (treat), vce(robust)
+teffects ra (re78  ${XX}) (treat), vce(robust) atet
 
 
 ************************************************************************************************
@@ -64,19 +66,10 @@ histogram pscore, by(treat) binrescale
 
 capture ssc install covbal
 
-covbal train ${XX}
+covbal treat age educ  marr nodegree black hisp re74 re75 u74 u75 
 
-gen ipww=1/ps*train+1/(1-ps)*(1-train)
-covbal train ${XX}, wt(ipww)
-
-
-foreach X of varlist age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1 {
-    di "*****************  ", "`X'", "  ***********************"
-    reg `X' train, vce(robust)
-    treatrew `X' train ${XX}, model(probit)
-    *teffects ipw (`X') (train ${XX}, probit)
-    *teffects ipw (`X') (train ${XX}, probit), atet
-}
+gen ipww=1/ps*treat+1/(1-ps)*(1-treat)
+covbal treat age educ  marr nodegree black hisp re74 re75 u74 u75 , wt(ipww)
 
 
 ************************************************************************************************
@@ -86,11 +79,11 @@ foreach X of varlist age agesq agecube educ edusq marr nodegree black hisp re74 
 * Use teffects to calculate inverse probability weighted regression
 
 gen re78_scaled = re78/10000
-cap n teffects ipw (re78_scaled) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), osample(overlap)
+cap n teffects ipw (re78_scaled) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), osample(overlap) atet
 keep if overlap==0
 drop overlap
 
-cap n teffects ipw (re78_scaled) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), osample(overlap)
+cap n teffects ipw (re78_scaled) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), osample(overlap) atet
 cap drop overlap
 
 
@@ -100,29 +93,29 @@ cap drop overlap
 
 ** Exact matching
 
-teffects nnmatch (re78) (train), atet ematch(black hisp married)
-reg re78 train black hisp married, robust
 
-capture teffects nnmatch (re78) (train), atet ematch(black hisp married educ)
+capture teffects nnmatch (re78) (treat), atet ematch(black hisp marr educ) atet
             //---- FAILS, of course
             
  
 * Nearest neighbor matching
-teffects nnmatch (re78 treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (train) , atet
+teffects nnmatch (re78  age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (treat) , atet
 
-teffects nnmatch (re78 treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (train) , atet nn(5)
+teffects nnmatch (re78  age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (treat) , atet nn(5)
 
-teffects nnmatch (re78 treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (train) , atet biasadj(age agesq educ re74 re75)
+teffects nnmatch (re78  age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (treat) , atet biasadj(age agesq educ re74 re75)
 
 
 ** PS matching
-teffects psmatch (re78) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), atet gen(pstub_cps) nn(3) atet
+teffects psmatch (re78) (treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, logit), atet gen(pstub_cps) nn(3) 
 
 
 teffects overlap, ptlevel(1) n(400)
 
 
 *** Coarsened exact matching
-ssc install cem, replace
-cem age (10 20 30 40 60) age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, treatment(treat)
-reg re78 treat [iweight=cem_weights], robust
+ssc install ebalance, replace
+ebalance treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, tar(1) g(ebw)
+reg re78 treat [pweight=ebw], robust
+
+reg age treat [pweight=ebw], robust
