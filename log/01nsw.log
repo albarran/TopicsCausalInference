@@ -1228,3 +1228,8 @@ end of do-file
 
 r(111);
 
+. clear
+
+. cls
+
+. exit, clear
