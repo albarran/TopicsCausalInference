@@ -18,7 +18,7 @@ output: html_document
 
    * [Slides](Unit1.html)
    
-   * [NSW data](https://github.com/albarran/TopicsCausalInference/blob/main/data/nsw.dta)
+   * [NSW data](https://github.com/albarran/TopicsCausalInference/raw/main/data/nsw.dta)
    
    * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/01nsw.do)
    
@@ -42,7 +42,7 @@ output: html_document
 
    * [Slides](Unit3.html)
 
-   * [CPS data](https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta)
+   * [CPS data](https://github.com/albarran/TopicsCausalInference/raw/main/data/cps.dta)
    
    * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.do)
    
