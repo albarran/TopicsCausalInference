@@ -44,3 +44,10 @@ output: html_document
 
    * [CPS data](https://github.com/albarran/TopicsCausalInference/blob/main/data/cps.dta)
    
+   * [Stata code](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.do)
+   
+   * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.R)
+   
+   * [Python](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.py)
+   
+   
