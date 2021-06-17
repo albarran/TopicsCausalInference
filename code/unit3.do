@@ -113,7 +113,7 @@ teffects psmatch (re78) (treat age agesq agecube educ edusq marr nodegree black 
 teffects overlap, ptlevel(1) n(400)
 
 
-*** Coarsened exact matching
+*** Entropy Balance
 ssc install ebalance, replace
 ebalance treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, tar(1) g(ebw)
 reg re78 treat [pweight=ebw], robust

@@ -48,6 +48,5 @@ output: html_document
    
    * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.R)
    
-   * [Python](https://github.com/albarran/TopicsCausalInference/blob/main/code/unit3.py)
-   
+
    
