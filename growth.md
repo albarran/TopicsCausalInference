@@ -5,7 +5,7 @@ output: html_document
 
 # The standard growth convergence empirical model
 
-<img src="https://render.githubusercontent.com/render/math?math= Y_{i,T}=\alpha_{0}+\alpha_{1} Y_{i,0}+\sum_{j=1}^{k} \beta_{j} X_{i j}+\varepsilon_{i},\quad i=1,\dots,n">
+<img src="https://render.githubusercontent.com/render/math?math=Y_{i,T}=\alpha_{0}+\alpha_{1} Y_{i,0}+\sum_{j=1}^{k} \beta_{j} X_{i j}+\varepsilon_{i},\quad i=1,\dots,n">
 
 where 
 
