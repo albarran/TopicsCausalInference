@@ -33,8 +33,8 @@ data("GrowthData")
 
 The data contain macroeconomic information for large set of countries over several decades. In particular,
 
-- $n$ = 90 countries
-- $k$ = 60 country features
+- n = 90 countries
+- k = 60 country features
 
 Not so big...
 
