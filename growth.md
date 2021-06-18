@@ -5,18 +5,18 @@ output: html_document
 
 # The standard growth convergence empirical model
 
-$$\small Y_{i,T}=\alpha_{0}+\alpha_{1} Y_{i,0}+\sum_{j=1}^{k} \beta_{j} X_{i j}+\varepsilon_{i},\quad i=1,\dots,n,$$
+<img src="https://render.githubusercontent.com/render/math?math= Y_{i,T}=\alpha_{0}+\alpha_{1} Y_{i,0}+\sum_{j=1}^{k} \beta_{j} X_{i j}+\varepsilon_{i},\quad i=1,\dots,n">
 
 where 
 
-  - $Y_{i,T}$ national growth rates in GDP per capita for the periods 1965-1975 and 1975-1985.
+  - <img src="https://render.githubusercontent.com/render/math?math=Y_{i,T}"> national growth rates in GDP per capita for the periods 1965-1975 and 1975-1985.
 
-  - $Y_{i,0}$ is the log of the initial level of GDP at the beginning of the specified decade.
+  - <img src="https://render.githubusercontent.com/render/math?math=Y_{i,0}"> is the log of the initial level of GDP at the beginning of the specified decade.
 
-  - $X_{ij}$ covariates which might influence growth.
+  - <img src="https://render.githubusercontent.com/render/math?math=X_{ij}"> covariates which might influence growth.
 
 
-* The growth convergence hypothesis implies that $\alpha_1<0$.
+* The growth convergence hypothesis implies that <img src="https://render.githubusercontent.com/render/math?math=\alpha_1<0">.
 
 
 # Growth data
@@ -38,7 +38,7 @@ The data contain macroeconomic information for large set of countries over sever
 
 Not so big...
 
-Nevertheless, the number of covariates is large relative to the sample size $\Rightarrow$ variable selection is important!
+Nevertheless, the number of covariates is large relative to the sample size, so variable selection is important!
 
 
    * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/Growth.R)
