@@ -60,4 +60,4 @@ output: html_document
    
    * [Growth Example](growth.html)
 
-   * [Causal Tress](CT.html)
+   * [Causal Trees](CT.html)

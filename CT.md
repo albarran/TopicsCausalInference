@@ -19,9 +19,6 @@ This study seeks evidence for a "social pressure" effect on voters turnout.
 Outcome, treatment and attributes
 
 
-:::: {style="display: flex;"}
-
-::: {}
 - __`outcome_voted`__: Dummy where 1 indicates voted in the August 2006
 - __`treat_neighbors`__: Dummy where 1 indicates _Neighbors mailing_ treatment
 - `sex`: male / female
@@ -36,12 +33,6 @@ Outcome, treatment and attributes
 - `totalpopulation_estimate`: City population
 - `percent_male`: percentage of males in household
 
-
-::: 
-
-::: {}
-
-
 - `median_age`: Median age in household
 - `median_income`: Median income in household
 - `percent_62yearsandover`: percent. of subjects of age higher than 62 yo
@@ -53,9 +44,6 @@ Outcome, treatment and attributes
 - `highschool`: percent. having only high school degree
 - `bach_orhigher`: percent. having bachelor degree or higher
 
-::: 
-
-::::
 
 
-*    * [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/CT.R)
+* [R code](https://github.com/albarran/TopicsCausalInference/blob/main/code/CT.R)
