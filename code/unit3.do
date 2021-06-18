@@ -43,8 +43,8 @@ reg re78 i.treat##(c.age c.agesq c.agecube c.educ c.edusq i.marr i.nodegree i.bl
 margins         , dydx(treat)
 margins if treat, dydx(treat)
 
-teffects ra (re78  ${XX}) (treat), vce(robust)
-teffects ra (re78  ${XX}) (treat), vce(robust) atet
+teffects ra (re78  age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (treat), vce(robust)
+teffects ra (re78  age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1) (treat), vce(robust) atet
 
 
 ************************************************************************************************
@@ -115,7 +115,9 @@ teffects overlap, ptlevel(1) n(400)
 
 *** Entropy Balance
 ssc install ebalance, replace
+
 ebalance treat age agesq agecube educ edusq marr nodegree black hisp re74 re75 u74 u75 interaction1, tar(1) g(ebw)
+
 reg re78 treat [pweight=ebw], robust
 
 reg age treat [pweight=ebw], robust
