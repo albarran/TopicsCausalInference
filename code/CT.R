@@ -5,6 +5,7 @@ library(experimentdatar)        # contains data
 #install.packages("devtools")
 #devtools::install_github("susanathey/causalTree")
 library(causalTree)
+library(tidymodels)
 
 # Data
 data(social)
@@ -80,9 +81,9 @@ min_cp      <- which.min(cptable$xerror)
 optim_cp_ct <- cptable[min_cp, "CP"]
 
 # Prune the tree at optimal $cp$
-
-pruned_tree <- prune(tree = tree, cp = optim_cp_ct)
-
+prune
+pruned_tree <- prune.rpart(tree = tree, cp = optim_cp_ct)
+prune
 
 # The estimated tree
   
@@ -123,7 +124,6 @@ df_all_leaf <- df_all %>%
 
 # Estimate the condicional ATE using the causal tree
   
-lm(Y ~ leaf + D * leaf - D - 1)
 
 df_all_lm  <- 
   df_all_leaf %>% 
