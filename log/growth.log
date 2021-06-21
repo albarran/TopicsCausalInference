@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /home/albarran/Dropbox/UABCourse/TopicsCausalInference/log/growth.log
   log type:  text
- opened on:  18 Jun 2021, 07:25:08
+ opened on:  18 Jun 2021, 16:11:06
 
 . 
 . *********************************************
@@ -89,7 +89,10 @@ Sorted by:
      Note: Dataset has changed since last saved.
 
 . 
-. * OLS
+end of do-file
+
+. do "/tmp/SD08009.000000"
+
 . 
 . reg outcome gdpsh465 bmp1l-tot1, vce(robust)
 
@@ -170,6 +173,12 @@ Linear regression                               Number of obs     =         90
 . 
 . * Naive Lasso
 . 
+end of do-file
+
+. do "/tmp/SD08009.000000"
+
+. * Naive Lasso
+. 
 . rlasso outcome gdpsh465 bmp1l-tot1, sqrt
 
 ---------------------------------------------------
@@ -181,6 +190,10 @@ Linear regression                               Number of obs     =         90
 
 . 
 . 
+end of do-file
+
+. do "/tmp/SD08009.000000"
+
 . * Double selection Lasso
 . pdslasso outcome gdpsh465 (bmp1l-tot)
 1.  (PDS/CHS) Selecting HD controls for dep var outcome...
@@ -245,10 +258,5 @@ Standard errors and test statistics valid for the following variables only:
 ------------------------------------------------------------------------------
 
 . 
-. 
-. log close
-      name:  <unnamed>
-       log:  /home/albarran/Dropbox/UABCourse/TopicsCausalInference/log/growth.log
-  log type:  text
- closed on:  18 Jun 2021, 07:25:09
-------------------------------------------------------------------------------------
+end of do-file
+
